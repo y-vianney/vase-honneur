@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 
 const ADMIN_USERNAME = process.env.ADMIN_USER || "admin";
 const ADMIN_PASSWORD = process.env.ADMIN_PASS || "vaseshonneur2025";
-const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // --- CONNEXION MONGO OPTIMISÉE POUR VERCEL ---

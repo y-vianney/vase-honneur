@@ -16,9 +16,6 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
-// --- CONNEXION MONGO OPTIMISÉE POUR VERCEL ---
-let isConnected = false; // Variable globale pour suivre l'état
-
 // view engine setup
 app.set('views', path.join(__dirname, 'public', 'views'));
 app.set('view engine', 'ejs');
