@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gold: '#D4AF37', darkgray: '#333333' },
+                    fontFamily: { serif: ['Georgia', 'serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 text-darkgray font-sans min-h-screen flex flex-col">
+
+    <div id="login-section" class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-sm border-t-4 border-gold">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-gold text-white rounded-full flex items-center justify-center text-xl font-serif font-bold mx-auto mb-4">VH</div>
+                <h2 class="text-2xl font-bold text-gray-800">Administration</h2>
+                <p class="text-gray-500 text-sm">Veuillez vous identifier</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Utilisateur</label>
+                    <input type="text" id="username" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-gold focus:border-gold outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                    <input type="password" id="password" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-gold focus:border-gold outline-none" required>
+                </div>
+                <p id="login-error" class="text-red-500 text-sm text-center hidden"></p>
+                <button type="submit" class="w-full bg-darkgray text-white font-bold py-2 rounded-lg hover:bg-black transition">Connexion</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-section" class="hidden w-full relative">
+        <nav class="bg-white shadow-md border-b-4 border-gold sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="bg-gold text-white font-bold rounded-full h-8 w-8 flex items-center justify-center mr-3">VH</div>
+                        <h1 class="text-lg font-bold hidden sm:block">Tableau de Bord</h1>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-gray-500 hidden sm:block" id="admin-status">Connecté</span>
+                        <button onclick="logout()" class="text-red-500 text-sm font-medium hover:text-red-700 border border-red-200 px-3 py-1 rounded hover:bg-red-50 transition">Déconnexion</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto py-6 px-4 z-10 relative">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 items-end">
+                <div class="bg-white p-4 rounded-lg shadow border-l-4 border-gold flex justify-between items-center">
+                    <div>
+                        <span class="text-gray-500 text-sm uppercase">Total Inscrits</span>
+                        <span id="total-count" class="block text-3xl font-bold text-darkgray">0</span>
+                    </div>
+                    <div class="text-gold opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 flex flex-col sm:flex-row gap-3 justify-end">
+                    <div class="relative w-full sm:max-w-xs">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </div>
+                        <input type="text" id="searchInput" onkeyup="renderTable()"
+                               class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold sm:text-sm transition duration-150 ease-in-out shadow-sm"
+                               placeholder="Rechercher (Nom, ID, Tel...)">
+                    </div>
+
+                    <button onclick="exportExcel()" class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow hover:bg-black transition flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                        Export Excel
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID Ticket</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-body" class="bg-white divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+                <div id="no-results" class="hidden p-8 text-center text-gray-500">
+                    Aucun résultat trouvé pour votre recherche.
+                </div>
+            </div>
+        </main>
+
+        <div id="qr-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50 backdrop-blur-sm" onclick="closeQRModalOnOutsideClick(event)">
+            <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full text-center relative mx-4 animate-[fadeIn_0.2s_ease-out]">
+                <button onclick="closeQRModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <h3 class="text-lg font-bold text-gold mb-2 uppercase tracking-wider">Scanner le ticket</h3>
+                <div id="modal-qrcode-container" class="flex justify-center my-4 p-2 border-4 border-gold/20 rounded-lg inline-block bg-white"></div>
+                <div>
+                    <p id="modal-ticket-id" class="font-bold text-2xl text-darkgray">VH-xxxx</p>
+                    <p id="modal-ticket-name" class="text-gray-500">Nom Prénom</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let currentData = []; // Liste complète venant du serveur
+        let refreshInterval;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = sessionStorage.getItem('auth_token');
+            if (token) { showDashboard(); } else { showLogin(); }
+        });
+
+        function showLogin() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('dashboard-section').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            loadData();
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(() => { loadData(true); }, 5000);
+        }
+
+        // LOGIN & LOGOUT
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('login-error');
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    sessionStorage.setItem('auth_token', data.token);
+                    errorMsg.classList.add('hidden');
+                    showDashboard();
+                } else {
+                    errorMsg.innerText = data.error || "Erreur"; errorMsg.classList.remove('hidden');
+                }
+            } catch (err) { errorMsg.innerText = "Erreur serveur"; errorMsg.classList.remove('hidden'); }
+        }
+
+        function logout() { sessionStorage.removeItem('auth_token'); showLogin(); }
+
+        // CHARGEMENT DES DONNÉES
+        async function loadData(isSilent = false) {
+            const token = sessionStorage.getItem('auth_token');
+            const tbody = document.getElementById('table-body');
+            if(!token) return logout();
+
+            if (!isSilent) tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-400">Chargement...</td></tr>';
+
+            try {
+                const res = await fetch(`${API_URL}/registrants`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (res.status === 401 || res.status === 403) { logout(); return; }
+
+                const newData = await res.json();
+
+                // Si c'est une maj silencieuse et que rien n'a changé, on ne fait rien pour économiser
+                if (isSilent && JSON.stringify(newData) === JSON.stringify(currentData)) return;
+
+                currentData = newData;
+                document.getElementById('total-count').innerText = currentData.length;
+
+                // On appelle la fonction d'affichage qui gère aussi la recherche
+                renderTable();
+
+            } catch (err) {
+                if(!isSilent) tbody.innerHTML = '<tr><td colspan="5" class="text-center text-red-500 py-4">Erreur de connexion</td></tr>';
+            }
+        }
+
+        // --- NOUVELLE FONCTION D'AFFICHAGE AVEC RECHERCHE ---
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            const noResults = document.getElementById('no-results');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            // Filtrage des données
+            const filteredData = currentData.filter(p => {
+                // On cherche dans le Nom, l'ID, l'email ou le téléphone
+                return (p.name && p.name.toLowerCase().includes(searchTerm)) ||
+                    (p.ticketId && p.ticketId.toLowerCase().includes(searchTerm)) ||
+                    (p.email && p.email.toLowerCase().includes(searchTerm)) ||
+                    (p.phone && p.phone.includes(searchTerm));
+            });
+
+            // Affichage vide ou résultats
+            if (filteredData.length === 0 && currentData.length > 0) {
+                tbody.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            // Génération HTML
+            let html = '';
+            if (currentData.length === 0) {
+                html = '<tr><td colspan="5" class="text-center py-8 text-gray-400 italic">Aucun inscrit pour le moment.</td></tr>';
+            } else {
+                filteredData.forEach(p => {
+                    const safeName = p.name.replace(/'/g, "\\'");
+                    html += `
+                        <tr class="hover:bg-yellow-50 transition duration-150 group">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${p.date}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <button onclick="openQRModal('${p.ticketId}', '${safeName}')"
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-gold/10 text-gold hover:bg-gold hover:text-white transition items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
+                                    ${p.ticketId}
+                                </button>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">${p.name}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div class="flex flex-col">
+                                    <span>${p.email || ''}</span>
+                                    <span class="text-xs text-gray-400">${p.phone || ''}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button onclick="deleteRow('${p.ticketId}')" class="text-red-400 hover:text-red-600 p-2 rounded hover:bg-red-50 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            tbody.innerHTML = html;
+        }
+
+        // QR MODAL
+        function openQRModal(ticketId, name) {
+            const modal = document.getElementById('qr-modal');
+            const qrContainer = document.getElementById('modal-qrcode-container');
+            document.getElementById('modal-ticket-id').innerText = ticketId;
+            document.getElementById('modal-ticket-name').innerText = name;
+            qrContainer.innerHTML = "";
+            new QRCode(qrContainer, { text: JSON.stringify({id: ticketId, name: name}), width: 180, height: 180, colorDark : "#333333", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+        function closeQRModal() { const m = document.getElementById('qr-modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
+        function closeQRModalOnOutsideClick(e) { if (e.target.id === 'qr-modal') closeQRModal(); }
+
+        // ACTIONS
+        async function deleteRow(id) {
+            if(!confirm("Supprimer cet inscrit ?")) return;
+            const token = sessionStorage.getItem('auth_token');
+            await fetch(`${API_URL}/registrants/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+            loadData(false);
+        }
+        function exportExcel() {
+            const worksheet = XLSX.utils.json_to_sheet(currentData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Inscrits");
+            XLSX.writeFile(workbook, 'Inscrits_VH.xlsx');
+        }
+    </script>
+    </body>
+    </html>

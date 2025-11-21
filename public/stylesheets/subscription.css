@@ -1,0 +1,126 @@
+/* --- CENTRAGE DU FORMULAIRE --- */
+/* Si le formulaire est sur une page seule, on centre le body */
+body.form-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+/* --- WRAPPER DU FORMULAIRE --- */
+.registration-wrapper {
+    width: 100%;
+    max-width: 550px;
+    background: var(--bg-pure);
+    border-radius: 4px;
+    box-shadow: var(--shadow-gold);
+    /* Utilisation de l'ombre définie dans shared */
+    position: relative;
+    overflow: hidden;
+    border-top: 5px solid var(--gold-primary);
+}
+
+.form-header {
+    text-align: center;
+    padding: 40px 40px 20px 40px;
+}
+
+.form-header h2 {
+    font-family: var(--font-title);
+    font-size: 2.5rem;
+    color: var(--gold-primary);
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.form-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 300;
+}
+
+/* --- INPUTS & LABELS --- */
+.form-body {
+    padding: 20px 40px 50px 40px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    color: var(--text-main);
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--gold-primary);
+    background-color: #fffcf5;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* Grille 2 colonnes pour Nom/Prénom */
+.row-2 {
+    display: flex;
+    gap: 20px;
+}
+
+.col {
+    flex: 1;
+}
+
+/* --- BOUTON DE SOUMISSION --- */
+.btn-submit {
+    width: 100%;
+    padding: 18px;
+    background-color: var(--gold-primary);
+    color: white;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    border: 1px solid var(--gold-primary);
+}
+
+.btn-submit:hover {
+    background-color: var(--bg-pure);
+    color: var(--gold-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.25);
+}
+
+/* Responsive Form */
+@media (max-width: 600px) {
+    .row-2 {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .form-header h2 {
+        font-size: 2rem;
+    }
+}

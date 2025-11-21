@@ -1,0 +1,73 @@
+/* --- 1. VARIABLES & THÈME (BLANC & OR) --- */
+:root {
+  /* Palette de Couleurs */
+  --bg-main: #fcfcfc;
+  /* Blanc cassé principal */
+  --bg-pure: #ffffff;
+  /* Blanc pur */
+
+  --gold-primary: #d4af37;
+  /* Or riche */
+  --gold-light: #f3e5ab;
+  /* Or pâle */
+  --gold-dark: #aa8c2c;
+  /* Or foncé */
+
+  --text-main: #2d3748;
+  /* Gris foncé pour le texte */
+  --text-muted: #718096;
+  /* Gris moyen */
+  --text-white: #ffffff;
+  /* Blanc pour le texte sur fond sombre */
+
+  /* Effets */
+  --shadow-gold: 0 15px 35px rgba(212, 175, 55, 0.10);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.03);
+
+  /* Polices */
+  --font-title: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* --- 2. RESET & BASE --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  background: radial-gradient(circle at 50% 0%, #fff9e6 0%, #ffffff 60%);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- 3. UTILITAIRES --- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Classe utilitaire pour le texte doré */
+.text-gold {
+  color: var(--gold-primary);
+}
+
+.back-home {
+  position: absolute;
+  top: 45px;
+  left: 45px;
+  font-size: 0.9rem;
+  color: var(--text-white);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  padding: 12px 25px;
+  border-radius: 50px;
+  background: #000;
+  font-weight: 600;
+}

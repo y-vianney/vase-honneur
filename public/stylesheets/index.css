@@ -1,0 +1,177 @@
+/* --- HERO SECTION --- */
+.hero {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+/* Le fil d'or vertical */
+.hero::before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 120px;
+    background: linear-gradient(to bottom, var(--gold-primary), transparent);
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hero h1 {
+    font-family: var(--font-title);
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -2px;
+
+    /* Effet Or Métallique animé */
+    background: linear-gradient(45deg, var(--gold-dark), var(--gold-primary), #b8860b, var(--gold-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 300% auto;
+    animation: goldShine 6s ease infinite;
+}
+
+@keyframes goldShine {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.hero .subtitle {
+    font-size: 1.35rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    max-width: 650px;
+    margin-bottom: 3.5rem;
+}
+
+/* Bouton CTA de l'accueil */
+.btn-gold {
+    display: inline-block;
+    padding: 18px 50px;
+    background-color: var(--gold-primary);
+    color: white;
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+    border-radius: 2px;
+}
+
+.btn-gold:hover {
+    background-color: var(--gold-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+}
+
+/* --- INFO CARDS --- */
+.info-section {
+    padding: 60px 0 100px 0;
+}
+
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 35px;
+}
+
+.card {
+    background: var(--bg-pure);
+    padding: 50px 30px;
+    text-align: center;
+    border-radius: 2px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s ease;
+    border-top: 3px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-gold);
+    border-top: 3px solid var(--gold-primary);
+}
+
+.card-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--gold-primary);
+    margin-bottom: 15px;
+    display: block;
+    font-weight: 700;
+}
+
+.card-content {
+    font-family: var(--font-title);
+    font-size: 1.8rem;
+    color: var(--text-main);
+    margin-bottom: 5px;
+}
+
+.card-sub {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* --- VERSE SECTION --- */
+.verse-section {
+    padding: 120px 0;
+    text-align: center;
+    background-color: #fffcf5;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.verse-text {
+    font-family: var(--font-title);
+    font-style: italic;
+    font-size: 2.2rem;
+    color: var(--gold-dark);
+    line-height: 1.4;
+}
+
+.verse-ref {
+    margin-top: 30px;
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Responsive Home */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 3.2rem;
+    }
+
+    .hero .subtitle {
+        font-size: 1.1rem;
+        padding: 0 20px;
+    }
+
+    .verse-text {
+        font-size: 1.6rem;
+    }
+}
