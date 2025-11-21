@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 let isConnected = false; // Variable globale pour suivre l'état
 
 // view engine setup
-app.set('views', path.join(__dirname, 'public/views'));
+app.set('views', path.join(__dirname, 'public', 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
