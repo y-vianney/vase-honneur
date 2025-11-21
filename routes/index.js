@@ -12,8 +12,4 @@ router.get('/admin', function(req, res, next) {
     res.render('admin', { title: "Administration - Vases d'Honneur" });
 })
 
-router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'index.ejs'));
-});
-
 module.exports = router;
