@@ -4,46 +4,43 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const apiRouter = require('./routes/api');
 
 const app = express();
 
-// CORS : Autoriser tout (plus simple pour Vercel)
-app.use(cors({ origin: '*' }));
-app.use(bodyParser.json());
-
-// view engine setup
-app.set('views', path.join(__dirname, 'public', 'views'));
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'public', 'views'));
 
+// Configuration Vercel & Express
+app.use(cors({ origin: '*' }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+// Servir les fichiers statiques (HTML, CSS, JS du frontend)
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: false }));
+
+// Routes
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+    next(createError(404));
 });
 
 // error handler
-errorHandler = (err, req, res, next) => {
-    // set locals, only providing error in development
+const errorHandler = (err, req, res, next) =>  {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
+    // Pour une API, on renvoie du JSON en cas d'erreur, pas une vue HTML
     res.status(err.status || 500);
-    res.render('error');
+    res.json({ error: err.message });
 }
 app.use(errorHandler);
 
