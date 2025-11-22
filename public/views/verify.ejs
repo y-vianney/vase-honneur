@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification Ticket - Vases d'Honneur</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-2xl border-t-4 border-gold text-center">
+
+        <h1 class="text-3xl font-bold mb-4 text-darkgray font-serif">Vérification du Ticket</h1>
+        <p id="loading-message" class="text-gray-600 mb-6">Chargement des informations...</p>
+
+        <div id="loading-spinner" class="flex justify-center mb-6">
+            <svg class="animate-spin h-8 w-8 text-gold" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
+        </div>
+
+        <div id="verification-result" class="hidden">
+            <div id="status-card" class="p-6 rounded-lg text-white mb-6">
+                <p class="text-xl font-bold" id="status-text"></p>
+            </div>
+
+            <div id="ticket-info" class="text-left space-y-3 p-4 border rounded-lg bg-gray-50">
+                <p class="text-xs text-gray-500">Nom du Participant:</p>
+                <h2 class="text-2xl font-serif font-bold text-darkgray" id="info-name"></h2>
+
+                <div class="border-t pt-3 mt-3">
+                    <p class="text-xs text-gray-500">ID du Ticket:</p>
+                    <p class="font-mono text-lg text-gold" id="info-id"></p>
+                </div>
+
+                <p class="text-sm text-gray-700"><span class="font-semibold">Email:</span> <span id="info-email"></span>
+                </p>
+                <p class="text-sm text-gray-700"><span class="font-semibold">Téléphone:</span> <span
+                        id="info-phone"></span></p>
+            </div>
+        </div>
+
+        <button onclick="window.close()" class="mt-8 text-sm text-gray-500 hover:text-darkgray underline">Fermer cette
+            fenêtre</button>
+
+    </div>
+
+    <script>
+        const API_URL = '/api';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const ticketId = params.get('id');
+
+            if (ticketId) {
+                fetchTicketData(ticketId);
+            } else {
+                displayError("ID de ticket manquant. Scan invalide.");
+            }
+        });
+
+        function displayLoading(isLoading) {
+            document.getElementById('loading-message').classList.toggle('hidden', !isLoading);
+            document.getElementById('loading-spinner').classList.toggle('hidden', !isLoading);
+            document.getElementById('verification-result').classList.toggle('hidden', isLoading);
+        }
+
+        function displayTicket(data) {
+            const statusCard = document.getElementById('status-card');
+            const statusText = document.getElementById('status-text');
+
+            // Logique de validation simple : si les données existent, c'est valide
+            statusText.innerText = "ACCÈS AUTORISÉ";
+            statusCard.classList.add('bg-green-600');
+
+            document.getElementById('info-name').innerText = data.name;
+            document.getElementById('info-id').innerText = data.ticketId;
+            document.getElementById('info-email').innerText = data.email;
+            document.getElementById('info-phone').innerText = data.phone;
+        }
+
+        function displayError(message) {
+            const statusCard = document.getElementById('status-card');
+            const statusText = document.getElementById('status-text');
+
+            statusText.innerText = message;
+            statusCard.classList.add('bg-red-600');
+
+            document.getElementById('verification-result').classList.remove('hidden');
+            document.getElementById('loading-message').classList.add('hidden');
+            document.getElementById('loading-spinner').classList.add('hidden');
+            document.getElementById('ticket-info').classList.add('hidden'); // Cache les détails
+        }
+
+        async function fetchTicketData(ticketId) {
+            displayLoading(true);
+            try {
+                // Nouvelle route d'API à créer : /api/registrant/:id
+                const response = await fetch(`${API_URL}/registrant/${ticketId}`);
+                const data = await response.json();
+
+                if (response.ok && data.ticketId) {
+                    displayTicket(data);
+                } else {
+                    displayError("TICKET INTROUVABLE ou INVALIDE");
+                }
+            } catch (error) {
+                console.error("Erreur de connexion API:", error);
+                displayError("ERREUR DE CONNEXION SERVEUR");
+            } finally {
+                displayLoading(false);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -90,13 +90,34 @@ router.get('/registrants', authenticateToken, async (req, res) => {
     }
 });
 
-// 3. Supprimer un inscrit (DELETE)
+// 4. Supprimer un inscrit (DELETE)
 router.delete('/registrants/:id', authenticateToken, async (req, res) => {
     try {
         await Inscription.findOneAndDelete({ ticketId: req.params.id });
         res.json({ message: "Supprimé avec succès" });
     } catch (error) {
         res.status(500).json({ error: "Erreur de suppression" });
+    }
+});
+
+// 5. Route de vérification du ticket (Public)
+router.get('/registrant/:ticketId', async (req, res) => {
+    try {
+        const ticketId = req.params.ticketId;
+        
+        // Cherche le participant par l'ID unique stocké dans le QR code
+        const participant = await Inscription.findOne({ ticketId: ticketId });
+
+        if (participant) {
+            // Renvoie les données complètes pour vérification
+            res.json(participant); 
+        } else {
+            // Renvoie un 404 si l'ID n'existe pas dans la base
+            res.status(404).json({ error: "Ticket non trouvé" });
+        }
+    } catch (error) {
+        console.error("Erreur API /registrant:", error);
+        res.status(500).json({ error: "Erreur interne du serveur" });
     }
 });
 

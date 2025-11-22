@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,26 +22,34 @@
         }
     </script>
 </head>
+
 <body class="bg-gray-100 text-darkgray font-sans min-h-screen flex flex-col">
 
     <div id="login-section" class="flex-grow flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-sm border-t-4 border-gold">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-gold text-white rounded-full flex items-center justify-center text-xl font-serif font-bold mx-auto mb-4">VH</div>
+                <div
+                    class="w-16 h-16 bg-gold text-white rounded-full flex items-center justify-center text-xl font-serif font-bold mx-auto mb-4">
+                    VH</div>
                 <h2 class="text-2xl font-bold text-gray-800">Administration</h2>
                 <p class="text-gray-500 text-sm">Veuillez vous identifier</p>
             </div>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Utilisateur</label>
-                    <input type="text" id="username" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-gold focus:border-gold outline-none" required>
+                    <input type="text" id="username"
+                        class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-gold focus:border-gold outline-none"
+                        required>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
-                    <input type="password" id="password" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-gold focus:border-gold outline-none" required>
+                    <input type="password" id="password"
+                        class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-gold focus:border-gold outline-none"
+                        required>
                 </div>
                 <p id="login-error" class="text-red-500 text-sm text-center hidden"></p>
-                <button type="submit" class="w-full bg-darkgray text-white font-bold py-2 rounded-lg hover:bg-black transition">Connexion</button>
+                <button type="submit"
+                    class="w-full bg-darkgray text-white font-bold py-2 rounded-lg hover:bg-black transition">Connexion</button>
             </form>
         </div>
     </div>
@@ -50,12 +59,15 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <div class="bg-gold text-white font-bold rounded-full h-8 w-8 flex items-center justify-center mr-3">VH</div>
+                        <div
+                            class="bg-gold text-white font-bold rounded-full h-8 w-8 flex items-center justify-center mr-3">
+                            VH</div>
                         <h1 class="text-lg font-bold hidden sm:block">Tableau de Bord</h1>
                     </div>
                     <div class="flex items-center gap-4">
                         <span class="text-sm text-gray-500 hidden sm:block" id="admin-status">Connecté</span>
-                        <button onclick="logout()" class="text-red-500 text-sm font-medium hover:text-red-700 border border-red-200 px-3 py-1 rounded hover:bg-red-50 transition">Déconnexion</button>
+                        <button onclick="logout()"
+                            class="text-red-500 text-sm font-medium hover:text-red-700 border border-red-200 px-3 py-1 rounded hover:bg-red-50 transition">Déconnexion</button>
                     </div>
                 </div>
             </div>
@@ -70,22 +82,34 @@
                         <span id="total-count" class="block text-3xl font-bold text-darkgray">0</span>
                     </div>
                     <div class="text-gold opacity-50">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                     </div>
                 </div>
 
                 <div class="md:col-span-2 flex flex-col sm:flex-row gap-3 justify-end">
                     <div class="relative w-full sm:max-w-xs">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
                         </div>
                         <input type="text" id="searchInput" onkeyup="renderTable()"
-                               class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold sm:text-sm transition duration-150 ease-in-out shadow-sm"
-                               placeholder="Rechercher (Nom, ID, Tel...)">
+                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold sm:text-sm transition duration-150 ease-in-out shadow-sm"
+                            placeholder="Rechercher (Nom, ID, Tel...)">
                     </div>
 
-                    <button onclick="exportExcel()" class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow hover:bg-black transition flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    <button onclick="exportExcel()"
+                        class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow hover:bg-black transition flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gold" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
                         Export Excel
                     </button>
                 </div>
@@ -95,13 +119,14 @@
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID Ticket</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
-                        </tr>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID Ticket
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nom</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
+                            </tr>
                         </thead>
                         <tbody id="table-body" class="bg-white divide-y divide-gray-100"></tbody>
                     </table>
@@ -112,13 +137,21 @@
             </div>
         </main>
 
-        <div id="qr-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50 backdrop-blur-sm" onclick="closeQRModalOnOutsideClick(event)">
-            <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full text-center relative mx-4 animate-[fadeIn_0.2s_ease-out]">
+        <div id="qr-modal"
+            class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50 backdrop-blur-sm"
+            onclick="closeQRModalOnOutsideClick(event)">
+            <div
+                class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full text-center relative mx-4 animate-[fadeIn_0.2s_ease-out]">
                 <button onclick="closeQRModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
                 <h3 class="text-lg font-bold text-gold mb-2 uppercase tracking-wider">Scanner le ticket</h3>
-                <div id="modal-qrcode-container" class="flex justify-center my-4 p-2 border-4 border-gold/20 rounded-lg inline-block bg-white"></div>
+                <div id="modal-qrcode-container"
+                    class="flex justify-center my-4 p-2 border-4 border-gold/20 rounded-lg inline-block bg-white"></div>
                 <div>
                     <p id="modal-ticket-id" class="font-bold text-2xl text-darkgray">VH-xxxx</p>
                     <p id="modal-ticket-name" class="text-gray-500">Nom Prénom</p>
@@ -180,7 +213,7 @@
         async function loadData(isSilent = false) {
             const token = sessionStorage.getItem('auth_token');
             const tbody = document.getElementById('table-body');
-            if(!token) return logout();
+            if (!token) return logout();
 
             if (!isSilent) tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-400">Chargement...</td></tr>';
 
@@ -200,11 +233,10 @@
                 renderTable();
 
             } catch (err) {
-                if(!isSilent) tbody.innerHTML = '<tr><td colspan="5" class="text-center text-red-500 py-4">Erreur de connexion</td></tr>';
+                if (!isSilent) tbody.innerHTML = '<tr><td colspan="5" class="text-center text-red-500 py-4">Erreur de connexion</td></tr>';
             }
         }
 
-        // --- NOUVELLE FONCTION D'AFFICHAGE AVEC RECHERCHE ---
         function renderTable() {
             const tbody = document.getElementById('table-body');
             const noResults = document.getElementById('no-results');
@@ -271,7 +303,7 @@
             document.getElementById('modal-ticket-id').innerText = ticketId;
             document.getElementById('modal-ticket-name').innerText = name;
             qrContainer.innerHTML = "";
-            new QRCode(qrContainer, { text: JSON.stringify({id: ticketId, name: name}), width: 180, height: 180, colorDark : "#333333", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+            new QRCode(qrContainer, { text: `https://vase-honneur.onrender.com/api/verify?id=${ticketId}`, width: 180, height: 180, colorDark: "#333333", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
             modal.classList.remove('hidden'); modal.classList.add('flex');
         }
         function closeQRModal() { const m = document.getElementById('qr-modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
@@ -279,7 +311,7 @@
 
         // ACTIONS
         async function deleteRow(id) {
-            if(!confirm("Supprimer cet inscrit ?")) return;
+            if (!confirm("Supprimer cet inscrit ?")) return;
             const token = sessionStorage.getItem('auth_token');
             await fetch(`${API_URL}/registrants/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
             loadData(false);
@@ -291,5 +323,6 @@
             XLSX.writeFile(workbook, 'Inscrits_VH.xlsx');
         }
     </script>
-    </body>
-    </html>
+</body>
+
+</html>
