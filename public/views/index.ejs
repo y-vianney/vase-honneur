@@ -145,8 +145,8 @@
                     class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diamond-upholstery.png')]">
                 </div>
                 <h3 class="font-bold tracking-widest text-sm mb-1 uppercase">Vases d'Honneur</h3>
-                <h1 class="font-serif text-2xl font-bold mb-1">Nuit de la Gloire</h1>
-                <p class="text-sm opacity-90">24 Novembre 2025 • 18h00</p>
+                <h1 class="font-serif text-2xl font-bold mb-1">Dîner Gala</h1>
+                <p class="text-sm opacity-90">24 Décembre 2025 • 21h00</p>
             </div>
 
             <div class="p-6 flex flex-col items-center justify-center border-x border-gray-100">
@@ -163,7 +163,7 @@
 
             <div class="bg-gray-800 text-white p-3 text-center text-xs">
                 <p>Présentez ce code à l'entrée.</p>
-                <p class="text-gold mt-1">Lieu: Palais de la Culture</p>
+                <p class="text-gold mt-1">Lieu: Centre d'influence - Plateau Dokui</p>
             </div>
         </div>
 
@@ -246,13 +246,13 @@
             };
 
             try {
-                const BASE_URL = 'https://vase-honneur.onrender.com/api';
+                const BASE_URL = '/api';
                 const response = await fetch(`${BASE_URL}/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                const verificationURL = `${BASE_URL}/verify?id=${ticketId}`;
+                const verificationURL = `${window.location.origin}/verify?id=${ticketId}`;
 
                 if (response.ok) {
                     // ... (logique de génération de ticket) ...

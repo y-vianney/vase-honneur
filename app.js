@@ -13,7 +13,27 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'public', 'views'));
 
-// Configuration Vercel & Express
+// Liste des origines autorisées :
+const allowedOrigins = [
+    `http://localhost:${process.env.PORT || 3000}`,
+    'https://vase-honneur.onrender.com',
+    'https://vase-honneur.vercel.app',
+];
+
+const corsOptions = {
+    // Si l'origine de la requête est dans la liste, on l'autorise.
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(cors({ origin: '*' }));
 app.use(logger('dev'));
 app.use(express.json());
