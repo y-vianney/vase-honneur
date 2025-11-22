@@ -7,6 +7,7 @@
     <title>
         <%= title %>
     </title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -56,7 +57,7 @@
                 <!-- <div
                     class="w-20 h-20 mx-auto bg-gold rounded-full flex items-center justify-center text-white font-serif text-2xl shadow-md mb-4">
                     VH</div> -->
-                    <img src="/images/logo.png" alt="logo Vases d'Honneur" class="h-24 mx-auto mb-10">
+                <img src="/images/logo.png" alt="logo Vases d'Honneur" class="h-24 mx-auto mb-10">
                 <h3 class="uppercase tracking-widest text-sm text-gold font-bold mb-2">Certifié 2025</h3>
                 <h1 class="text-4xl md:text-5xl font-serif font-bold text-darkgray mb-4">Dîner Gala</h1>
                 <!-- <p class="text-gray-600 italic">"Une soirée d'adoration et de miracles."</p> -->
@@ -242,7 +243,7 @@
                 email: email,
                 phone: phone,
                 date: date,
-                event: "Nuit de la Gloire"
+                event: "Dîner Gala 2025"
             };
 
             try {
@@ -269,6 +270,8 @@
                     });
 
                     goToPage('ticket');
+
+                    triggerConfetti();
                 } else {
                     alert("Erreur lors de l'enregistrement. Veuillez réessayer.");
                 }
@@ -302,6 +305,38 @@
             html2pdf().set(opt).from(element).save().then(() => {
                 btn.innerHTML = oldText;
             });
+        }
+
+        // Fonction de confettis
+        function triggerConfetti() {
+            // Quelques déclenchements différents pour un effet varié
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function () {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                // Lance des confettis depuis le côté gauche
+                confetti(Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                }));
+                // Lance des confettis depuis le côté droit
+                confetti(Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                }));
+            }, 250);
         }
     </script>
 </body>
